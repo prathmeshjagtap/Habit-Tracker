@@ -5,6 +5,9 @@ function Archive() {
 	return (
 		<div>
 			<Navbar />
+			{/* {Remove this later} */}
+			Archieve page
+			<Navbar />
 		</div>
 	);
 }
