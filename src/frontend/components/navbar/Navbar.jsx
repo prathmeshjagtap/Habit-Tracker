@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import { useLocation, matchPath } from "react-router-dom";
 import { SunIcon, MoonIcon, MenuIcon, XIcon } from "@heroicons/react/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../actions";
+import { toast } from "react-toastify";
+import { toastStyle } from "../../utils";
 
 function Navbar() {
+	const { token } = useSelector((state) => state.authentication);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	let Links = [
 		{ name: "Habits", link: "/habits" },
 		{ name: "Pomodoro", link: "/pomodoro" },
 		{ name: "Archive", link: "/archive" },
-		{ name: "Login", link: "/login" },
 	];
 
 	const [mobileNav, setMobileNav] = useState(false);
 	const [theme, setTheme] = useState("Light");
 
 	const { pathname } = useLocation();
-
+	const logoutHandler = (dispatch) => {
+		localStorage.removeItem("token");
+		dispatch(logout());
+		navigate("/");
+		toast.success("Logout Successfully ", toastStyle);
+	};
 	return (
 		<div className="shadow-md w-full sticky top-0 left-0 md:flex justify-around  items-center bg-white  py-4 md:px-10 px-7 text-lg font-medium">
 			<Link to="/">
@@ -67,6 +78,23 @@ function Navbar() {
 						</Link>
 					</li>
 				) : null}
+				{token ? (
+					<li
+						className="md:ml-8 text-l md:my-0 my-7"
+						onClick={(e) => {
+							e.preventDefault();
+							logoutHandler(dispatch);
+						}}
+					>
+						<p className="hover:text-green-500 duration-500">Logout</p>
+					</li>
+				) : (
+					<li className="md:ml-8 text-l md:my-0 my-7">
+						<Link to="/login" className=" hover:text-green-500 duration-500">
+							Login
+						</Link>
+					</li>
+				)}
 				{theme === "Light" ? (
 					<SunIcon
 						className="hidden h-6 w-6 ml-10 md:block "
