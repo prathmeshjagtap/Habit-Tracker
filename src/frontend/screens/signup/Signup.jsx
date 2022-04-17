@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { token } from "../../actions";
 import { toast } from "react-toastify";
+import { toastStyle } from "../../utils";
 
 function Signup() {
 	const [userDetail, setUserDetail] = useState({
@@ -48,23 +49,14 @@ function Signup() {
 					userInfo: response.data.foundUser,
 				})
 			);
-			toast.success("Sign in Successfully ", {
-				position: "top-right",
-				autoClose: 2000,
-			});
+			toast.success("Sign in Successfully ", toastStyle);
 
 			navigate("/");
 		} catch (error) {
 			if (error.response.status === 422) {
-				toast.error("Email Already Exists", {
-					position: "top-center",
-					autoClose: 2000,
-				});
+				toast.error("Email Already Exists", toastStyle);
 			} else {
-				toast.error("Server Error", {
-					position: "top-center",
-					autoClose: 2000,
-				});
+				toast.error("Server Error", toastStyle);
 			}
 		}
 	};

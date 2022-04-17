@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions";
 import { toast } from "react-toastify";
+import { toastStyle } from "../../utils";
 
 function Navbar() {
 	const { token } = useSelector((state) => state.authentication);
@@ -24,10 +25,7 @@ function Navbar() {
 		localStorage.removeItem("token");
 		dispatch(logout());
 		navigate("/");
-		toast.success("Logout Successfully ", {
-			position: "top-right",
-			autoClose: 2000,
-		});
+		toast.success("Logout Successfully ", toastStyle);
 	};
 	return (
 		<div className="shadow-md w-full sticky top-0 left-0 md:flex justify-around  items-center bg-white  py-4 md:px-10 px-7 text-lg font-medium">

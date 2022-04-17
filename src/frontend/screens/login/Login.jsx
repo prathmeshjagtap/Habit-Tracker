@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { token } from "../../actions";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { toastStyle } from "../../utils";
 
 function Login() {
 	const [userDetail, setUserDetail] = useState({
@@ -35,27 +36,15 @@ function Login() {
 					userInfo: response.data.foundUser,
 				})
 			);
-			toast.success("Logged in Successfully ", {
-				position: "top-right",
-				autoClose: 2000,
-			});
+			toast.success("Logged in Successfully ", toastStyle);
 			navigate(from, { replace: true });
 		} catch (error) {
 			if (error.response.status === 404) {
-				toast.error("Wrong Email", {
-					position: "top-right",
-					autoClose: 2000,
-				});
+				toast.error("Wrong Email", toastStyle);
 			} else if (error.response.status === 401) {
-				toast.error("Invalid Credentials", {
-					position: "top-center",
-					autoClose: 2000,
-				});
+				toast.error("Invalid Credentials", toastStyle);
 			} else {
-				toast.error("Server Error", {
-					position: "top-center",
-					autoClose: 2000,
-				});
+				toast.error("Server Error", toastStyle);
 			}
 		}
 	};
