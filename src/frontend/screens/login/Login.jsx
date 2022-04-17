@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import loginImg from "../../assets/loginImg.svg";
 import { useDispatch } from "react-redux";
 import { token } from "../../actions";
@@ -13,15 +13,15 @@ function Login() {
 	});
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
 	const handleChange = (e) => {
 		setUserDetail({
 			...userDetail,
 			[e.target.name]: e.target.value,
 		});
 	};
-
+	let from = location.state?.from?.pathname || "/";
 	const loginHandler = async (email, password, dispatch) => {
-		console.log(email, password, dispatch);
 		try {
 			const response = await axios.post(`/api/auth/login`, {
 				email,
@@ -39,7 +39,7 @@ function Login() {
 				position: "top-right",
 				autoClose: 2000,
 			});
-			navigate("/");
+			navigate(from, { replace: true });
 		} catch (error) {
 			if (error.response.status === 404) {
 				toast.error("Wrong Email", {
