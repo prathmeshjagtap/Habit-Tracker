@@ -4,6 +4,7 @@ import loginImg from "../../assets/loginImg.svg";
 import { useDispatch } from "react-redux";
 import { token } from "../../actions";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
 	const [userDetail, setUserDetail] = useState({
@@ -34,16 +35,34 @@ function Login() {
 					userInfo: response.data.foundUser,
 				})
 			);
-
+			toast.success("Logged in Successfully ", {
+				position: "top-right",
+				autoClose: 2000,
+			});
 			navigate("/");
 		} catch (error) {
-			console.log(error);
+			if (error.response.status === 404) {
+				toast.error("Wrong Email", {
+					position: "top-right",
+					autoClose: 2000,
+				});
+			} else if (error.response.status === 401) {
+				toast.error("Invalid Credentials", {
+					position: "top-center",
+					autoClose: 2000,
+				});
+			} else {
+				toast.error("Server Error", {
+					position: "top-center",
+					autoClose: 2000,
+				});
+			}
 		}
 	};
 	return (
 		<div className="flex justify-center items-center  w-full h-screen">
-			<div className="flex items-center shadow-md">
-				<div className="hidden md:block h-full">
+			<div className="flex items-center justify-around shadow-md">
+				<div className="hidden md:block  h-1/2 w-1/2 p-4">
 					<img
 						className="h-full w-full bg-cover "
 						src={loginImg}
